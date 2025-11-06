@@ -1,10 +1,17 @@
-from sistema import Menu
+from sistema import Menu, Pet
 
 if __name__ == "__main__":
-  form = Menu()             # cria o objeto da classe
-  respostas = form.perguntasCadastro()  # executa o método e captura as respostas
+    menu = Menu()
+    opcao = menu.opcoes()
+    pet = Pet()
 
-  # Exibe as respostas no final
-  print("\n🐾 Respostas coletadas:")
-  for pergunta, resposta in respostas.items():
-      print(f"{pergunta} -> {resposta}")
+    try:
+        if opcao == 1:
+              pet.cadastro_pet()
+        if opcao == 2:
+              pass  # TODO: Implementar edição de pet
+    except Exception as e:
+      print(f"\nErro ao cadastrar pet: {e}")
+
+
+ 

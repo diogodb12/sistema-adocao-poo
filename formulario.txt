@@ -13,3 +13,5 @@
 7 - Qual a raça do pet?
 
 8 - Qual o porte do pet?
+
+9 - Pet é PCD (S/N)?

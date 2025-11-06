@@ -1,0 +1,9 @@
+Eduardo
+Cachorro
+Fêmea
+Bernadino de Campo, 2, Santos
+0.25
+10.0
+Pig
+Médio
+Sim
