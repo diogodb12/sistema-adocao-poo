@@ -55,7 +55,7 @@ class Menu:
         print(f"\n❌ Arquivo {nome_arquivo} não encontrado. Cadastre algum adotante primeiro.")
     except Exception as e:
         print(f"\n❌ Ocorreu um erro: {e}")
-    
+  
   def listar_pets(self):
     nome_arquivo = 'petsCadastrados/Pets.csv'
     try:
@@ -74,29 +74,34 @@ class Menu:
 
             for pet in pets:
                 print("-" * 60)
-                print(f"🆔 ID: {pet['id_pet']}")
-                print(f"🐾 Nome: {pet['nome']}")
-                print(f"🐕 Tipo: {pet['tipo']}")
-                print(f"⚥ Sexo: {pet['sexo']}")
-                print(f"📍 Endereço: {pet['endereco']}")
-                print(f"📅 Idade: {pet['idade']} anos")
-                print(f"⚖️ Peso: {pet['peso']} kg")
-                print(f"🎨 Raça: {pet['raca']}")
-                print(f"📏 Porte: {pet['porte']}")
-                print(f"♿ PCD: {pet['petPcd']}")
-                print(f"💚 Status: {pet['isAdotado']}")
-                
-                if pet.get('isAdotado', '').lower() == 'adotado':
+
+                pcd_formatado = "Sim" if str(pet.get('petPcd', 'False')).lower() == "true" else "Não"
+                status = pet.get('isAdotado', 'desconhecido').capitalize()
+
+                print(f"🆔 ID: {pet.get('id_pet', 'N/A')}")
+                print(f"🐾 Nome: {pet.get('nome', 'N/A')}")
+                print(f"🐕 Tipo: {pet.get('tipo', 'N/A')}")
+                print(f"⚥ Sexo: {pet.get('sexo', 'N/A')}")
+                print(f"📍 Endereço: {pet.get('endereco', 'N/A')}")
+                print(f"📅 Idade: {pet.get('idade', 'N/A')} anos")
+                print(f"⚖️ Peso: {pet.get('peso', 'N/A')} kg")
+                print(f"🎨 Raça: {pet.get('raca', 'N/A')}")
+                print(f"📏 Porte: {pet.get('porte', 'N/A')}")
+                print(f"♿ PCD: {pcd_formatado}")
+                print(f"💚 Status: {status}")
+
+                if status.lower() == "adotado":
                     print(f"👤 Adotado por: {pet.get('nome_adotante', 'N/A')}")
                     print(f"📄 CPF do adotante: {pet.get('cpf_adotante', 'N/A')}")
                     print(f"📞 Telefone do adotante: {pet.get('telefone_adotante', 'N/A')}")
-            
+
             print("-" * 60)
 
     except FileNotFoundError:
         print(f"\n❌ Arquivo {nome_arquivo} não encontrado. Cadastre algum pet primeiro.")
     except Exception as e:
         print(f"\n❌ Ocorreu um erro: {e}")
+
       
   def alterar_info_pet(self, caminho_arquivo="petsCadastrados/Pets.csv"):
     """

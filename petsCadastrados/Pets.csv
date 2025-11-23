@@ -1,4 +1,4 @@
-id_pet,nome,tipo,sexo,endereco,idade,peso,raca,porte,petPcd,isAdotado
-00001,Glauber,Cachorro,Macho,"ASDKSAKD, 223, Santos",4.0,8.0,NÃO INFORMADO,NÃO INFORMADO,False,disponível
-00002,Adalberto,Cachorro,Macho,"ASKDSAKD, 123, Santos",2.0,6.0,Vira lata,pequeno,False,disponível
-00003,Juan,Cachorro,Macho,"ASKDKSAD, 123, Santos",3.0,6.0,Vira lata,pequeno,False,disponível
+id_pet,nome,tipo,sexo,endereco,idade,peso,raca,porte,petPcd,isAdotado,nome_adotante,cpf_adotante,telefone_adotante
+00001,Glauber,Cachorro,Macho,"ASDKSAKD, 223, Santos",4.0,8.0,NÃO INFORMADO,médio,False,disponível,N/A,N/A,N/A
+00003,Juan,Cachorro,Macho,"ASKDKSAD, 123, Santos",3.0,6.0,Vira lata,pequeno,False,disponível,N/A,N/A,N/A
+00005,Cleiton Jr,Gato,Macho,"Maracãna, 12, Rio de Janeiro",1.0,3.0,siames,médio,False,adotado,Jonas James,11111111111,11900000000
