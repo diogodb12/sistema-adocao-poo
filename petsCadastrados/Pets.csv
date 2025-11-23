@@ -1,0 +1,4 @@
+id_pet,nome,tipo,sexo,endereco,idade,peso,raca,porte,petPcd,isAdotado
+00001,Glauber,Cachorro,Macho,"ASDKSAKD, 223, Santos",4.0,8.0,NÃO INFORMADO,NÃO INFORMADO,False,disponível
+00002,Adalberto,Cachorro,Macho,"ASKDSAKD, 123, Santos",2.0,6.0,Vira lata,pequeno,False,disponível
+00003,Juan,Cachorro,Macho,"ASKDKSAD, 123, Santos",3.0,6.0,Vira lata,pequeno,False,disponível

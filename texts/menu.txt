@@ -3,6 +3,6 @@
 2. Alterar os dados do pet cadastrado
 3. Deletar um pet cadastrado
 4. Listar todos os pets cadastrados
-5. Listar pets por algum critério (idade, nome, raça)
+5. Listar pets por critério (idade, nome, raça, ID, Disponibilidade)
 6. Adotar um Pet
 7. Sair
