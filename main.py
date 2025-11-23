@@ -1,11 +1,11 @@
-import Menu
-import Pet
-import Pessoa
+from classes.Menu import Menu
+from classes.Pet import Pet
+from classes.Pessoa import Pessoa
 
 if __name__ == "__main__":
-    menu = Menu
-    pet = Pet
-    pessoa = Pessoa
+    menu = Menu()
+    pet = Pet()
+    pessoa = Pessoa()
 
     while True:
         opcao = menu.opcoes()
@@ -22,7 +22,6 @@ if __name__ == "__main__":
             elif opcao == 5:
                 menu.buscar_pet()
             elif opcao == 6:
-                menu.criar_arquivo_pessoa()
                 pessoa.cadastrar_pessoa()
             elif opcao == 7:
                 print("\nEncerrando o sistema... Até logo!")

@@ -1,5 +1,3 @@
-import Menu
-
 NAO_INFORMADO = "NÃO INFORMADO" 
 
 class Pessoa:
@@ -13,6 +11,8 @@ class Pessoa:
         self.pets = pets if pets is not None else []
     
     def cadastrar_pessoa(self):
+        from classes.Menu import Menu
+        
         print("\n=== CADASTRO DE NOVA PESSOA ===")
     
         nome = input("Digite o nome da pessoa: ").strip()
@@ -50,4 +50,4 @@ class Pessoa:
         
         menu.salvar_pessoa_em_arquivo(pessoa)
     
-        print("\nPessoa cadastrada e salva com sucesso!")
+        print("\n✅ Pessoa cadastrada e salva com sucesso!")
