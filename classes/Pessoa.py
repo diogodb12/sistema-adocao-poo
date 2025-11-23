@@ -1,3 +1,6 @@
+import os
+import csv
+
 NAO_INFORMADO = "NÃO INFORMADO" 
 
 class Pessoa:
@@ -10,9 +13,40 @@ class Pessoa:
         self.endereco = endereco
         self.pets = pets if pets is not None else []
     
-    def cadastrar_pessoa(self):
-        from classes.Menu import Menu
+    def criar_arquivo_pessoa(self):
+        pasta = "adotantesCadastrados"
+        os.makedirs(pasta, exist_ok=True)
         
+        nome_arquivo = "Adotantes.csv"
+        caminho_arquivo = os.path.join(pasta, nome_arquivo)
+
+        if not os.path.exists(caminho_arquivo):
+            with open(caminho_arquivo, "w", newline="", encoding="utf-8") as arquivo:
+                gravar = csv.writer(arquivo)
+                gravar.writerow(["Nome", "CPF", "Email", "Telefone", "Endereço"])
+    
+    def salvar_pessoa_em_arquivo(self, pessoa):
+        pasta = "adotantesCadastrados"
+        os.makedirs(pasta, exist_ok=True)
+
+        nome_arquivo = "Adotantes.csv"
+        caminho_arquivo = os.path.join(pasta, nome_arquivo)
+
+        self.criar_arquivo_pessoa()
+
+        with open(caminho_arquivo, "a", newline="", encoding="utf-8") as f:
+            gravar = csv.writer(f)
+            gravar.writerow([
+                pessoa.nome,
+                pessoa.cpf,
+                pessoa.email,
+                pessoa.telefone,
+                pessoa.endereco,
+            ])         
+        
+        print(f"\nArquivo salvo em: {caminho_arquivo}")
+    
+    def cadastrar_pessoa(self):
         print("\n=== CADASTRO DE NOVA PESSOA ===")
     
         nome = input("Digite o nome da pessoa: ").strip()
@@ -44,10 +78,9 @@ class Pessoa:
     
         endereco = f"{rua}, {numero}, {cidade}"
     
-        pessoa = Pessoa(nome, cpf, email, telefone, endereco)
-
-        menu = Menu()
-        
-        menu.salvar_pessoa_em_arquivo(pessoa)
+        nova_pessoa = Pessoa(nome, cpf, email, telefone, endereco)
+        self.salvar_pessoa_em_arquivo(nova_pessoa)
     
         print("\n✅ Pessoa cadastrada e salva com sucesso!")
+        
+        return nova_pessoa

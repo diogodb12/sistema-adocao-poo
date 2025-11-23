@@ -22,7 +22,7 @@ if __name__ == "__main__":
             elif opcao == 5:
                 menu.buscar_pet()
             elif opcao == 6:
-                pessoa.cadastrar_pessoa()
+                menu.adotar_pet()
             elif opcao == 7:
                 print("\nEncerrando o sistema... Até logo!")
                 break

@@ -2,7 +2,13 @@ import os
 import csv
 from enum import Enum
 
-NAO_INFORMADO = "NÃO INFORMADO" 
+NAO_INFORMADO = "NÃO INFORMADO"
+
+CAMPOS_PET_CSV = [
+    "id_pet", "nome", "tipo", "sexo", "endereco", "idade",
+    "peso", "raca", "porte", "petPcd", "isAdotado",
+    "nome_adotante", "cpf_adotante", "telefone_adotante"
+] 
 
 class TipoAnimal(Enum):
   CACHORRO = "Cachorro"
@@ -40,18 +46,17 @@ class Pet:
 
     ultimo_id = 0
 
-    with open(arquivo_csv, "r", encoding="utf-8") as f:
-        leitor = csv.reader(f)
-        next(leitor, None)  # pula cabeçalho
+    with open(arquivo_csv, "r", newline='', encoding="utf-8") as f:
+        leitor = csv.DictReader(f)
 
         for linha in leitor:
             if not linha:  # ignora linhas vazias
                 continue
             try:
-                id_atual = int(linha[0])  # primeira coluna = id_pet
+                id_atual = int(linha['id_pet'])  # lê o campo id_pet corretamente
                 if id_atual > ultimo_id:
                     ultimo_id = id_atual
-            except ValueError:
+            except (ValueError, KeyError):
                 continue
 
     novo_id = ultimo_id + 1
@@ -174,11 +179,7 @@ class Pet:
     arquivo_existe = os.path.exists(arquivo_csv)
 
     with open(arquivo_csv, "a", newline='', encoding='utf-8') as csvfile:
-        campos = [
-            "id_pet", "nome", "tipo", "sexo", "endereco", "idade",
-            "peso", "raca", "porte", "petPcd", "isAdotado"
-        ]
-        writer = csv.DictWriter(csvfile, fieldnames=campos)
+        writer = csv.DictWriter(csvfile, fieldnames=CAMPOS_PET_CSV)
 
         # Escreve o cabeçalho apenas se o arquivo for novo
         if not arquivo_existe:
@@ -196,5 +197,8 @@ class Pet:
             "raca": pet.raca,
             "porte": pet.porte,
             "petPcd": pet.petPcd,
-            "isAdotado": pet.isAdotado
+            "isAdotado": pet.isAdotado,
+            "nome_adotante": "N/A",
+            "cpf_adotante": "N/A",
+            "telefone_adotante": "N/A"
         })

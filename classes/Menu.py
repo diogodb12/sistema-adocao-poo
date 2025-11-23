@@ -1,5 +1,6 @@
 import os
 import csv
+from classes.Pet import CAMPOS_PET_CSV
 
 class Menu:
    
@@ -23,26 +24,79 @@ class Menu:
         escolha = 0
 
     return escolha
+  
+  def listar_adotantes(self):
+    nome_arquivo = 'adotantesCadastrados/Adotantes.csv'
+    try:
+        with open(nome_arquivo, mode='r', newline='', encoding='utf-8') as file:
+            reader = csv.DictReader(file)
+            adotantes = list(reader)
+
+            if not adotantes:
+                print("\n⚠️ Nenhum adotante cadastrado no sistema.")
+                return
+
+            print("\n" + "="*60)
+            print(f"{'LISTA DE ADOTANTES CADASTRADOS':^60}")
+            print("="*60)
+            print(f"\nTotal de adotantes cadastrados: {len(adotantes)}\n")
+
+            for adotante in adotantes:
+                print("-" * 60)
+                print(f"👤 Nome: {adotante['Nome']}")
+                print(f"📄 CPF: {adotante['CPF']}")
+                print(f"📧 Email: {adotante['Email']}")
+                print(f"📞 Telefone: {adotante['Telefone']}")
+                print(f"📍 Endereço: {adotante['Endereço']}")
+            
+            print("-" * 60)
+
+    except FileNotFoundError:
+        print(f"\n❌ Arquivo {nome_arquivo} não encontrado. Cadastre algum adotante primeiro.")
+    except Exception as e:
+        print(f"\n❌ Ocorreu um erro: {e}")
     
   def listar_pets(self):
     nome_arquivo = 'petsCadastrados/Pets.csv'
     try:
-        # Abrir o arquivo CSV
         with open(nome_arquivo, mode='r', newline='', encoding='utf-8') as file:
-            reader = csv.reader(file)
+            reader = csv.DictReader(file)
+            pets = list(reader)
 
-            # Ler e imprimir o cabeçalho (opcional)
-            header = next(reader)
-            print("Cabeçalho:", header)
+            if not pets:
+                print("\n⚠️ Nenhum pet cadastrado no sistema.")
+                return
 
-            # Imprimir cada linha do CSV
-            for row in reader:
-                print(row)
+            print("\n" + "="*60)
+            print(f"{'LISTA DE PETS CADASTRADOS':^60}")
+            print("="*60)
+            print(f"\nTotal de pets cadastrados: {len(pets)}\n")
+
+            for pet in pets:
+                print("-" * 60)
+                print(f"🆔 ID: {pet['id_pet']}")
+                print(f"🐾 Nome: {pet['nome']}")
+                print(f"🐕 Tipo: {pet['tipo']}")
+                print(f"⚥ Sexo: {pet['sexo']}")
+                print(f"📍 Endereço: {pet['endereco']}")
+                print(f"📅 Idade: {pet['idade']} anos")
+                print(f"⚖️ Peso: {pet['peso']} kg")
+                print(f"🎨 Raça: {pet['raca']}")
+                print(f"📏 Porte: {pet['porte']}")
+                print(f"♿ PCD: {pet['petPcd']}")
+                print(f"💚 Status: {pet['isAdotado']}")
+                
+                if pet.get('isAdotado', '').lower() == 'adotado':
+                    print(f"👤 Adotado por: {pet.get('nome_adotante', 'N/A')}")
+                    print(f"📄 CPF do adotante: {pet.get('cpf_adotante', 'N/A')}")
+                    print(f"📞 Telefone do adotante: {pet.get('telefone_adotante', 'N/A')}")
+            
+            print("-" * 60)
 
     except FileNotFoundError:
-        print(f"Arquivo {nome_arquivo} não encontrado.")
+        print(f"\n❌ Arquivo {nome_arquivo} não encontrado. Cadastre algum pet primeiro.")
     except Exception as e:
-        print(f"Ocorreu um erro: {e}")
+        print(f"\n❌ Ocorreu um erro: {e}")
       
   def alterar_info_pet(self, caminho_arquivo="petsCadastrados/Pets.csv"):
     """
@@ -160,13 +214,18 @@ class Menu:
             print("⚠️ Opção inválida!")
             return
 
+        # Garantir que todos os pets tenham os campos de adotante
+        for linha in linhas:
+            if 'nome_adotante' not in linha:
+                linha['nome_adotante'] = "N/A"
+            if 'cpf_adotante' not in linha:
+                linha['cpf_adotante'] = "N/A"
+            if 'telefone_adotante' not in linha:
+                linha['telefone_adotante'] = "N/A"
+
         # Sobrescrever o arquivo CSV com as linhas atualizadas
         with open(caminho_arquivo, mode='w', newline='', encoding='utf-8') as f:
-            campos = [
-                "id_pet", "nome", "tipo", "sexo", "endereco", "idade",
-                "peso", "raca", "porte", "petPcd", "isAdotado"
-            ]
-            escritor = csv.DictWriter(f, fieldnames=campos)
+            escritor = csv.DictWriter(f, fieldnames=CAMPOS_PET_CSV)
             escritor.writeheader()  # Escrever cabeçalho
             escritor.writerows(linhas)  # Escrever as linhas com a alteração
 
@@ -177,86 +236,7 @@ class Menu:
     except Exception as e:
         print(f"⚠️ Ocorreu um erro: {e}")
 
-                 
-  def criar_arquivo_pessoa(self):
-
-    pasta = "adotantesCadastrados"
-    os.makedirs(pasta, exist_ok=True)
-    
-    nome_arquivo = "Adotantes.csv"
-    caminho_arquivo = os.path.join(pasta, nome_arquivo)
-
-    if not os.path.exists(caminho_arquivo):
-      with open(caminho_arquivo, "w", newline="", encoding="utf-8") as arquivo:
-        gravar = csv.writer(arquivo)
-        gravar.writerow(["Nome", "CPF", "Email", "Telefone", "Endereço"])
-    else:
-      pass
-
-  def salvar_pessoa_em_arquivo(self, pessoa):
-    
-     pasta = "adotantesCadastrados"
-     os.makedirs(pasta, exist_ok=True)
-
-     nome_arquivo = "Adotantes.csv"
-     caminho_arquivo = os.path.join(pasta, nome_arquivo)
-
-     self.criar_arquivo_pessoa()
-
-     with open(caminho_arquivo, "a", newline="", encoding="utf-8") as f:
-        gravar = csv.writer(f)
-        gravar.writerow([
-          pessoa.nome,
-          pessoa.cpf,
-          pessoa.email,
-          pessoa.telefone,
-          pessoa.endereco,
-        ])         
-       
-     print(f"\nArquivo salvo em: {caminho_arquivo}")
-
   
-  def criar_arquivo_pet(self):
-
-    pasta = "petsCadastrados"
-    os.makedirs(pasta, exist_ok=True)
-
-    nome_arquivo = "Pets.csv"
-    caminho_arquivo = os.path.join(pasta, nome_arquivo)
-
-    if not os.path.exists(caminho_arquivo):
-      with open(caminho_arquivo, "w", newline="", encoding="utf-8") as arquivo:
-        gravar = csv.writer(arquivo)
-        gravar.writerow(["Nome", "Tipo", "Sexo", "Endereço", "Idade", "Peso", "Raça", "Porte", "PCD"])
-    else:
-      pass
-
-  def salvar_pet_em_arquivo(self, pet):
-
-     pasta = "petsCadastrados"
-     os.makedirs(pasta, exist_ok=True)
-
-     nome_arquivo = "Pets.csv"
-     caminho_arquivo = os.path.join(pasta, nome_arquivo)
-
-     self.criar_arquivo_pet()
-
-     with open(caminho_arquivo, "a", newline="", encoding="utf-8") as f:
-        gravar = csv.writer(f)
-        gravar.writerow([
-          pet.nome,
-          pet.tipo.value if pet.tipo else "NÃO INFORMADO",
-          pet.sexo.value if pet.sexo else "NÃO INFORMADO",
-          pet.endereco,
-          pet.idade,
-          pet.peso,
-          pet.raca,
-          pet.porte,
-          "Sim" if pet.petPcd else "Não"
-        ])         
-
-     print(f"\nArquivo salvo em: {caminho_arquivo}")
-    
   def deletar_pet(self, caminho_arquivo="petsCadastrados/Pets.csv"):
     """
     Permite deletar um pet do arquivo CSV.
@@ -288,13 +268,18 @@ class Menu:
         if len(linhas) == 0:
             print("\n⚠️ Não há mais pets registrados no sistema.")
 
+        # Garantir que todos os pets restantes tenham os campos de adotante
+        for linha in linhas:
+            if 'nome_adotante' not in linha:
+                linha['nome_adotante'] = "N/A"
+            if 'cpf_adotante' not in linha:
+                linha['cpf_adotante'] = "N/A"
+            if 'telefone_adotante' not in linha:
+                linha['telefone_adotante'] = "N/A"
+
         # Sobrescrever o arquivo CSV com as linhas restantes (sem o pet deletado)
         with open(caminho_arquivo, mode='w', newline='', encoding='utf-8') as f:
-            campos = [
-                "id_pet", "nome", "tipo", "sexo", "endereco", "idade",
-                "peso", "raca", "porte", "petPcd", "isAdotado"
-            ]
-            escritor = csv.DictWriter(f, fieldnames=campos)
+            escritor = csv.DictWriter(f, fieldnames=CAMPOS_PET_CSV)
             escritor.writeheader()  # Escrever cabeçalho
             escritor.writerows(linhas)  # Escrever as linhas restantes (sem o pet deletado)
 
@@ -410,4 +395,87 @@ class Menu:
                   print("-" * 40)
           else:
               print("\n❌ Nenhum pet encontrado com esses critérios.")
+
+  def adotar_pet(self, caminho_arquivo="petsCadastrados/Pets.csv"):
+    """
+    Permite adotar um pet disponível.
+    Lista pets disponíveis, cadastra adotante e vincula ao pet.
+    """
+    try:
+        with open(caminho_arquivo, newline='', encoding='utf-8') as f:
+            leitor = csv.DictReader(f)
+            linhas = list(leitor)
+
+        # Garantir que todos os pets tenham os campos de adotante
+        for linha in linhas:
+            if 'nome_adotante' not in linha:
+                linha['nome_adotante'] = "N/A"
+            if 'cpf_adotante' not in linha:
+                linha['cpf_adotante'] = "N/A"
+            if 'telefone_adotante' not in linha:
+                linha['telefone_adotante'] = "N/A"
+
+        pets_disponiveis = [pet for pet in linhas if pet.get('isAdotado', '').lower() == 'disponível']
+
+        if not pets_disponiveis:
+            print("\n❌ Não há pets disponíveis para adoção no momento.")
+            return
+
+        print("\n" + "="*60)
+        print(f"{'PETS DISPONÍVEIS PARA ADOÇÃO':^60}")
+        print("="*60 + "\n")
+
+        for pet in pets_disponiveis:
+            print(f"🆔 ID: {pet['id_pet']} | 🐾 Nome: {pet['nome']} | 🐕 Tipo: {pet['tipo']}")
+            print(f"   ⚥ Sexo: {pet['sexo']} | 🎨 Raça: {pet['raca']} | 📅 Idade: {pet['idade']} anos")
+            print("-" * 60)
+
+        id_pet = input("\nDigite o ID do pet que deseja adotar (ou 0 para cancelar): ").strip()
+
+        if id_pet == "0":
+            print("\nAdoção cancelada.")
+            return
+
+        pet_encontrado = False
+        nome_pet = ""
+        nome_adotante_salvo = ""
+        
+        for linha in linhas:
+            if linha['id_pet'] == id_pet:
+                if linha.get('isAdotado', '').lower() != 'disponível':
+                    print(f"\n❌ O pet com ID {id_pet} já foi adotado!")
+                    return
+                pet_encontrado = True
+                nome_pet = linha['nome']
+                
+                print(f"\n🐾 Você escolheu adotar: {nome_pet}")
+                print("\nAgora vamos cadastrar os dados do adotante:\n")
+
+                from classes.Pessoa import Pessoa
+                pessoa = Pessoa()
+                adotante = pessoa.cadastrar_pessoa()
+
+                linha['isAdotado'] = 'adotado'
+                linha['nome_adotante'] = adotante.nome
+                linha['cpf_adotante'] = adotante.cpf
+                linha['telefone_adotante'] = adotante.telefone
+                nome_adotante_salvo = adotante.nome
+                break
+
+        if not pet_encontrado:
+            print(f"\n❌ Pet com ID {id_pet} não encontrado.")
+            return
+
+        with open(caminho_arquivo, mode='w', newline='', encoding='utf-8') as f:
+            escritor = csv.DictWriter(f, fieldnames=CAMPOS_PET_CSV)
+            escritor.writeheader()
+            escritor.writerows(linhas)
+
+        print(f"\n✅ Adoção realizada com sucesso! 🎉")
+        print(f"O pet {nome_pet} agora tem um novo lar com {nome_adotante_salvo}! 💚")
+
+    except FileNotFoundError:
+        print("\n❌ Arquivo não encontrado! Cadastre algum pet primeiro.")
+    except Exception as e:
+        print(f"\n❌ Ocorreu um erro: {e}")
 
