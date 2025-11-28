@@ -55,52 +55,51 @@ class Menu:
         print(f"\n❌ Arquivo {nome_arquivo} não encontrado. Cadastre algum adotante primeiro.")
     except Exception as e:
         print(f"\n❌ Ocorreu um erro: {e}")
-  
-  def listar_pets(self):
-    nome_arquivo = 'petsCadastrados/Pets.csv'
-    try:
-        with open(nome_arquivo, mode='r', newline='', encoding='utf-8') as file:
-            reader = csv.DictReader(file)
-            pets = list(reader)
+    
+  def listar_pets(self, caminho_arquivo="petsCadastrados/Pets.csv"):
+      try:
+          with open(caminho_arquivo, mode='r', newline='', encoding='utf-8') as file:
+              reader = csv.DictReader(file)
+              pets = list(reader)
 
-            if not pets:
-                print("\n⚠️ Nenhum pet cadastrado no sistema.")
-                return
+          if not pets:
+              print("\n⚠️ Nenhum pet cadastrado no sistema.")
+              return
 
-            print("\n" + "="*60)
-            print(f"{'LISTA DE PETS CADASTRADOS':^60}")
-            print("="*60)
-            print(f"\nTotal de pets cadastrados: {len(pets)}\n")
+          print("\n" + "="*60)
+          print(f"{'LISTA DE PETS CADASTRADOS':^60}")
+          print("="*60)
+          print(f"\nTotal de pets cadastrados: {len(pets)}\n")
 
-            for pet in pets:
-                print("-" * 60)
+          for pet in pets:
+              print("-" * 60)
 
-                pcd_formatado = "Sim" if str(pet.get('petPcd', 'False')).lower() == "true" else "Não"
-                status = pet.get('isAdotado', 'desconhecido').capitalize()
+              # Pega informações com segurança usando .get()
+              print(f"🆔 ID: {pet.get('id_pet', 'N/A')}")
+              print(f"🐾 Nome: {pet.get('nome', 'N/A')}")
+              print(f"🐕 Tipo: {pet.get('tipo', 'N/A')}")
+              print(f"⚥ Sexo: {pet.get('sexo', 'N/A')}")
+              print(f"🎨 Raça: {pet.get('raca', 'N/A')}")
+              print(f"📅 Idade: {pet.get('idade', 'N/A')} anos")
+              print(f"⚖️ Peso: {pet.get('peso', 'N/A')} kg")
+              print(f"📏 Porte: {pet.get('porte', 'N/A')}")
+              print(f"📍 Endereço: {pet.get('endereco', 'N/A')}")
+              print(f"♿ PCD: {pet.get('petPcd', 'N/A')}")
+              print(f"💚 Status: {pet.get('isAdotado', 'N/A')}")
 
-                print(f"🆔 ID: {pet.get('id_pet', 'N/A')}")
-                print(f"🐾 Nome: {pet.get('nome', 'N/A')}")
-                print(f"🐕 Tipo: {pet.get('tipo', 'N/A')}")
-                print(f"⚥ Sexo: {pet.get('sexo', 'N/A')}")
-                print(f"📍 Endereço: {pet.get('endereco', 'N/A')}")
-                print(f"📅 Idade: {pet.get('idade', 'N/A')} anos")
-                print(f"⚖️ Peso: {pet.get('peso', 'N/A')} kg")
-                print(f"🎨 Raça: {pet.get('raca', 'N/A')}")
-                print(f"📏 Porte: {pet.get('porte', 'N/A')}")
-                print(f"♿ PCD: {pcd_formatado}")
-                print(f"💚 Status: {status}")
+              # Se estiver adotado, exibe adotante
+              if pet.get('isAdotado', '').lower() == 'adotado':
+                  print(f"👤 Adotado por: {pet.get('nome_adotante', 'N/A')}")
+                  print(f"📄 CPF do adotante: {pet.get('cpf_adotante', 'N/A')}")
+                  print(f"📞 Telefone do adotante: {pet.get('telefone_adotante', 'N/A')}")
 
-                if status.lower() == "adotado":
-                    print(f"👤 Adotado por: {pet.get('nome_adotante', 'N/A')}")
-                    print(f"📄 CPF do adotante: {pet.get('cpf_adotante', 'N/A')}")
-                    print(f"📞 Telefone do adotante: {pet.get('telefone_adotante', 'N/A')}")
+          print("-" * 60)
+          input("\nPressione ENTER para continuar...")
 
-            print("-" * 60)
-
-    except FileNotFoundError:
-        print(f"\n❌ Arquivo {nome_arquivo} não encontrado. Cadastre algum pet primeiro.")
-    except Exception as e:
-        print(f"\n❌ Ocorreu um erro: {e}")
+      except FileNotFoundError:
+          print("\n❌ Arquivo Pets.csv não encontrado. Cadastre algum pet primeiro.")
+      except Exception as e:
+          print(f"\n❌ Ocorreu um erro: {e}")
 
       
   def alterar_info_pet(self, caminho_arquivo="petsCadastrados/Pets.csv"):

@@ -1,0 +1,2 @@
+id_pet,nome,tipo,sexo,raca,idade,peso,porte,endereco,petPcd,isAdotado,nome_adotante,cpf_adotante,telefone_adotante
+00001,AAA,Cachorro,Macho,AA,12,3,Médio,asdasdsa,Não,Disponível,N/A,N/A,N/A
